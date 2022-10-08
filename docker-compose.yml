@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+
+    volumes:
+      - .:/leeg/src/app
+      - /leeg/src/app/node_modules
+
+    depends_on: 
+      - redis
+
+    environment: 
+      DATABASE_HOST: mongodb://mongo:27017/leeg
+      NODE_ENV: development
+      PORT: 8080
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - 8080:8080
+      # debugging port
+      - 9229:9229
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
